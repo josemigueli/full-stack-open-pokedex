@@ -7,7 +7,7 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "cypress:open": "cypress open"
+    "cypress:run": "cypress run"
   },
   "devDependencies": {
     "cypress": "^14.3.2"
