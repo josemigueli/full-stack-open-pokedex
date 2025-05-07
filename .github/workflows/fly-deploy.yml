@@ -9,7 +9,7 @@ on:
 
 jobs:
   deploy:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && !contains(github.event.head_commit.message, '#skip')
     name: Deploy app
     runs-on: ubuntu-24.04
     concurrency: deploy-group
