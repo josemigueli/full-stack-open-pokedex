@@ -25,21 +25,20 @@ jobs:
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
       - name: Pokedex New Version Deployed
-        uses: rjstone/discord-webhook-notify@v1.0.4
         if: success()
-        with:
-          severity: info
-          details: |
-            Deploy Succeeded!
-            Version: ${{ github.sha }}
-            Available at: https://full-stack-open-pokedex-dark-silence-9764.fly.dev/
-          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
-      - name: Pokedex deployment failed
-        uses: rjstone/discord-webhook-notify@v1.0.4
+        run: |
+          curl -H "Content-Type: application/json" \
+          -X POST \
+          -d '{
+            "content": "**✅ Deploy Succeeded!**\n🔢 Version: '${{ github.sha }}'\n🌐 https://full-stack-open-pokedex-dark-silence-9764.fly.dev/"
+          }' \
+          ${{ secrets.DISCORD_WEBHOOK }}
+      - name: Pokedex Deployment Failed
         if: failure()
-        with:
-          severity: error
-          details: |
-            Deploy Failed!
-            Check the workflow logs at: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+        run: |
+          curl -H "Content-Type: application/json" \
+          -X POST \
+          -d '{
+           "content": "**❌ Deploy Failed!**\n🔍 Logs: '${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}'"
+          }' \
+          ${{ secrets.DISCORD_WEBHOOK }}
