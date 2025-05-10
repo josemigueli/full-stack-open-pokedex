@@ -1,0 +1,21 @@
+name: Health Check
+
+# on:
+#   schedule:
+#     - cron: "0 0 * * *"
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  health_check:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check the deployed Pokedex
+        uses: jtalk/url-health-check-action@b716ccb6645355dd9fcce8002ce460e5474f7f00
+        with:
+          url: https://full-stack-open-pokedex-dark-silence-9764.fly.dev/health
+          max-attempts: 3
+          retry-delay: 5s
